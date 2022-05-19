@@ -1,0 +1,17 @@
+{% extends "logs/base.html" %}
+
+{% block content %}
+<main class="user-auth">
+
+    <div class="form-container">
+        <h2>login</h2>
+        <form method="post" action="{% url 'users:login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="submit">log in</button>
+            <input type="hidden" name="next" value="{% url 'logs:public_topics' %}" />
+        </form>
+        <span class="post-form">Don't have an account? <a href="{% url 'users:register' %}">Register</a></span>
+    </div>
+</main>
+{% endblock content %}

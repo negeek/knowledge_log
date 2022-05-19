@@ -1,0 +1,72 @@
+.user-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--base-color);
+}
+
+.user-auth .form-container {
+    background-color: #ffffff65;
+    padding: 1rem 1.5rem 2rem;
+    border-radius: 3px;
+    max-width: 90%;
+    width: 350px;
+}
+
+.user-auth .form-container h2 {
+    text-align: center;
+    text-transform: capitalize;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.user-auth .form-container form p {
+    display: grid;
+    margin-top: .8rem;
+    width: 100%;
+}
+
+.user-auth form p label {
+    font-size: .9rem;
+}
+
+.user-auth form p input {
+    padding: .5rem .8rem;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+}
+
+.user-auth form p span,
+.user-auth form ul li {
+    font-size: .7rem;
+}
+
+.user-auth form button {
+    width: 100%;
+    border: none;
+    padding: .5rem .8rem;
+    background-color: var(--base-color);
+    color: #fff;
+    font-size: .9rem;
+    text-transform: capitalize;
+    border-radius: 3px;
+    margin-top: 1.2rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+
+.user-auth .form-container .post-form {
+    text-align: center;
+    font-size: .8rem;
+    display: block;
+    margin-top: 1rem;
+}
+
+.user-auth .form-container .post-form a {
+    color: var(--base-color);
+    text-decoration: none;
+}

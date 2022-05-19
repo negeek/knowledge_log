@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Macondo&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --base-color: #29354d;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+}
+
+header.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem 3rem 0rem;
+    flex-wrap: wrap;
+    background-color: var(--base-color);
+    height: 10vh;
+}
+
+header .brand {
+    font-family: 'Macondo', cursive;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.7rem;
+}
+
+header nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header nav a {
+    margin: 0 .5rem;
+    text-decoration: none;
+    text-transform: capitalize;
+    color: #fff;
+    font-size: .9rem;
+}
+
+main {
+    height: 90vh;
+    padding: 1rem 3rem;
+}
+
+.toast {
+    position: fixed;
+    top: 15vh;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid #ed4337;
+    background-color: #ed433734;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    font-weight: 300;
+    font-size: .8rem;
+    width: 500px;
+    max-width: 90%;
+}

@@ -1,0 +1,34 @@
+{% extends "logs/base.html" %}
+{% load filter %}
+{% block content %}
+<main class="public-topics topics">
+    <h1>Feeds</h1>
+    <ul>
+        {% for topic in topics %}
+        <li>
+            <a href="{% url 'logs:topic' topic.id %}" class="topic-item">
+                <h4>{{topic}}</h4>
+                <div class="meta-data">
+                    <span>{{topic.date_added}}</span>
+                    <span class="dot">•</span>
+                    <span>Public</span>
+                </div>
+                <div class="description">
+                    {% if topic.description %}
+                    <p>{{ topic.description }}</p>
+                    {% else %}
+                    <em>No description</em>
+                    {% endif %}
+                </div>
+                <div class="footer">
+                    <p class="author">by {{topic.owner}}</p>
+                    <p>{{topic_entries|key:topic}}</p>
+                </div>
+            </a>
+        </li>
+        {% empty %}
+        <li>No topics have been added yet.</li>
+        {% endfor %}
+    </ul>
+</main>
+{% endblock content %}

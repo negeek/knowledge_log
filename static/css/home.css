@@ -1,0 +1,40 @@
+.home-page {
+    background-color: var(--base-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.home-page .header {
+    margin-bottom: 2rem;
+    margin-top: -8rem;
+    color: #fff;
+}
+
+.home-page .header h1 {
+    text-transform: capitalize;
+    font-size: 3rem;
+    line-height: 3rem;
+}
+
+.home-page .header span {
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: .4rem;
+}
+
+.home-page p {
+    color: #f1f1f1;
+    max-width: 500px;
+    padding-bottom: 2rem;
+}
+
+.home-page .get-started-link {
+    border: 1px solid #fff;
+    color: #f1f1f1;
+    padding: .8rem 1.5rem;
+    text-decoration: none;
+    text-transform: capitalize;
+    border-radius: 30px;
+}

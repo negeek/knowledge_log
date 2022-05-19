@@ -1,0 +1,12 @@
+{% extends "logs/base.html" %}}
+{% block content %}
+<main class="home-page">
+    <div class="header">
+        <h1>track</h1>
+        <span>your learning</span>
+    </div>
+    <p>Knowledge Log helps you keep track of your knowledge, for any topic you're
+        learning about.</p>
+    <a href="{% url 'users:register' %}" class="get-started-link">Get started</a>
+</main>
+{% endblock content %}
