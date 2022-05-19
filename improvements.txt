@@ -1,7 +1,0 @@
-1. Add description to topics             done
-2. Add owner to public topics and entries      done
-3. Two base file(Public and Private)          done
-
-1. Register page -- too much text            done
-2. Name appearing on only your topic and feeds page               done
-3. Topic should have owner name, title, timestamp, description, public status, no of entries.   done
