@@ -1,0 +1,41 @@
+.entry {
+    padding-bottom: 1rem;
+    height: unset;
+}
+
+.entry header {
+    padding-bottom: .5rem;
+    line-height: 1.9rem;
+}
+
+.entry header h1 {
+    color: var(--base-color);
+    font-size: 2.5rem;
+}
+
+.entry header span {
+    color: #aaa;
+    font-size: .9rem;
+}
+
+.entry header span span {
+    font-weight: bold;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.entry .description {
+    margin: .5rem 0 .8rem;
+    max-width: 700px;
+}
+
+.entry .footer {
+    display: flex;
+    font-size: .85rem;
+    align-items: center;
+    color: #333;
+}
+
+.entry .footer span {
+    padding: 0 .1rem;
+}

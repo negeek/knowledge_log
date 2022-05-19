@@ -1,29 +1,43 @@
 {% extends "logs/base.html" %}
 {% block content %}
-<p>Topic: {{ topic }}</p>
-<p>Entries:</p>
-<br>
-<ul>
-    {% for entry in entries %}
-    <li>
-        <p>{{ entry.entry|linebreaks }}</p>
-        <p>owner: {{entry.owner}}</p>
-        <p>posted: {{ entry.date_added}}</p>
-        {% if topic.public is not True %}
-        <a href="{% url 'logs:edit_entry' entry.id %}">edit entry</a>
-        {% endif %}
-        <br><br>
-    </li>
+<main class="entry">
+    <header>
+        <h1>#{{ topic }}</h1>
+        <span>Created by <span>{{ topic.owner }}</span></span>
+    </header>
+    <p class="description">{{ topic.description }}</p>
+    <div class="footer">
+        <p>{{ topic.date_added }}</p><span class="dot">•</span>
+        {% if topic.public %}
+        <span>Public</span>
+        {%else%}
+        <span>Private</span>
+        {%endif%}
+    </div>
+    <p>{{ entries|length }}</p>
 
-    {% empty %}
-    <li>There are no entries for this topic yet.</li>
-    {% endfor %}
-</ul>
-<p>Add a new entry:</p>
-<form action="{% url 'logs:topic' topic.id %}" method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name='submit'>add entry</button>
-</form>
+    <ul>
+        {% for entry in entries %}
+        <li>
+            <p>{{ entry.entry|linebreaks }}</p>
+            <p>owner: {{entry.owner}}</p>
+            <p>posted: {{ entry.date_added}}</p>
+            {% if topic.public is not True %}
+            <a href="{% url 'logs:edit_entry' entry.id %}">edit entry</a>
+            {% endif %}
+            <br><br>
+        </li>
 
+        {% empty %}
+        <li>There are no entries for this topic yet.</li>
+        {% endfor %}
+    </ul>
+    <p>Add a new entry:</p>
+    <form action="{% url 'logs:topic' topic.id %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name='submit'>add entry</button>
+    </form>
+
+</main>
 {% endblock content %}
