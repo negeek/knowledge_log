@@ -35,7 +35,18 @@ def topic(request, topic_id):
             return render(request, 'logs/error.html', {})
     entries = topic.entry_set.order_by('date_added')
 
-    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries})
+    form = EntryForm()
+    if request.method == 'POST':
+        form = EntryForm(data=request.POST)
+
+        if form.is_valid():
+            new_entry = form.save(commit=False)
+            new_entry.topic = topic
+            new_entry.owner = request.user
+            new_entry.save()
+            return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
+
+    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries, 'form': form})
 
 
 @login_required
@@ -63,6 +74,7 @@ def new_topic(request):
     return render(request, 'logs/new_topic.html', {'form': form})
 
 
+'''
 @login_required
 def new_entry(request, topic_id):
     topic = Topic.objects.get(id=topic_id)
@@ -78,7 +90,7 @@ def new_entry(request, topic_id):
             new_entry.owner = request.user
             new_entry.save()
             return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
-    return render(request, 'logs/new_entry.html', {'form': form, 'topic': topic})
+    return render(request, 'logs/new_entry.html', {'form': form, 'topic': topic})'''
 
 
 @login_required

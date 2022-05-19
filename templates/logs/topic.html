@@ -19,5 +19,11 @@
     <li>There are no entries for this topic yet.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'logs:new_entry' topic.id %}">Add new entry</a>
+<p>Add a new entry:</p>
+<form action="{% url 'logs:topic' topic.id %}" method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name='submit'>add entry</button>
+</form>
+
 {% endblock content %}
