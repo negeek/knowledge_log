@@ -1,7 +1,7 @@
 {% extends "logs/base.html" %}
 {% block content %}
-<main class="entry">
-    <header>
+<main class="entry-page">
+    <header class="entry-page-header">
         <h1>#{{ topic }}</h1>
         <span>Created by <span>{{ topic.owner }}</span></span>
     </header>
@@ -14,30 +14,37 @@
         <span>Private</span>
         {%endif%}
     </div>
-    <p>{{ entries|length }}</p>
-
+    <header class="entries-header">
+        {% if entries|length is 0 %}
+        <p>No entries</p>
+        {% elif entries|length is 1 %}
+        <p>1 entry</p>
+        {% else %}
+        <p>{{entries|length}} entries</p>
+        {%endif%}
+    </header>
     <ul>
         {% for entry in entries %}
-        <li>
+        <li class="entry-item">
+            <header class="entry-item-header">
+                <span>{{entry.owner}}</span><span class="dot">•</span><span>{{ entry.date_added}}</span>
+            </header>
             <p>{{ entry.entry|linebreaks }}</p>
-            <p>owner: {{entry.owner}}</p>
-            <p>posted: {{ entry.date_added}}</p>
             {% if topic.public is not True %}
-            <a href="{% url 'logs:edit_entry' entry.id %}">edit entry</a>
+            <a href="{% url 'logs:edit_entry' entry.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
             {% endif %}
-            <br><br>
         </li>
-
         {% empty %}
-        <li>There are no entries for this topic yet.</li>
+        <em>There are no entries for this topic yet.</em>
         {% endfor %}
     </ul>
-    <p>Add a new entry:</p>
-    <form action="{% url 'logs:topic' topic.id %}" method='post'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button name='submit'>add entry</button>
-    </form>
-
+    <div class="form-container">
+        <p>Add a new entry:</p>
+        <form action="{% url 'logs:topic' topic.id %}" method='post'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name='submit'><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+    </div>
 </main>
 {% endblock content %}

@@ -10,6 +10,7 @@
 
 :root {
     --base-color: #29354d;
+    --light-base-color: #546a96;
 }
 
 body {
@@ -50,7 +51,7 @@ header nav a {
 
 main {
     height: 90vh;
-    padding: 1rem 3rem;
+    padding: 2rem 3rem 1rem;
 }
 
 .toast {
