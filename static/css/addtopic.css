@@ -1,0 +1,55 @@
+.add-form-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-form-page .form-container {
+    box-shadow: -1px 1px 7px 2px #b5b3b341;
+    padding: 1rem 1.5rem 2rem;
+    border-radius: 3px;
+    max-width: 90%;
+    width: 350px;
+}
+
+.add-form-page .form-container h2 {
+    font-weight: 500;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.add-form-page .form-container form {
+    display: grid;
+    gap: .5rem;
+    margin: .5rem 1rem;
+}
+
+.add-form-page .form-container label {
+    text-transform: capitalize;
+    font-size: .9rem;
+}
+
+.add-form-page .form-container input[type=text],
+.add-form-page .form-container textarea {
+    padding: .5rem .8rem;
+    outline: none;
+    border-radius: 2px;
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    border: 1px solid #999;
+    border-radius: 3px;
+}
+
+.add-form-page .form-container button {
+    width: 100%;
+    border: none;
+    padding: .5rem .8rem;
+    background-color: var(--base-color);
+    color: #fff;
+    font-size: .9rem;
+    text-transform: capitalize;
+    border-radius: 3px;
+    margin-top: 1.2rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}

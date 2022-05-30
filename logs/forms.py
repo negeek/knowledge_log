@@ -8,8 +8,8 @@ class Topicform(forms.ModelForm):
     class Meta:
         model = Topic
         # only text field is displayed from Topic
-        fields = ['topic', 'public', 'description']
-        labels = {'topic': ''}  # signifies no label for text field
+        fields = ['topic',  'description', 'public']
+        labels = {'topic': 'topic title'}  # signifies no label for text field
         widgets = {'description': forms.Textarea(attrs={'rows': 3})}
 
 

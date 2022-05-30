@@ -1,9 +1,13 @@
 {% extends "logs/base.html" %}
 {% block content %}
-<p>Add a new topic:</p>
-<form action="{% url 'logs:new_topic' %}" method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name="submit">add topic</button>
-</form>
+<main class="add-form-page">
+    <div class="form-container">
+        <h2>Add a new topic</h2>
+        <form action="{% url 'logs:new_topic' %}" method='post' class="add_topics_form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="submit">add topic</button>
+        </form>
+    </div>
+</main>
 {% endblock content %}
