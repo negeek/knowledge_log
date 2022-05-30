@@ -1,8 +1,10 @@
 .entry-page {
     padding-bottom: 1rem;
     height: unset;
-    max-width: 1000px;
     width: 100%;
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 3rem;
 }
 
 .entry-page .entry-page-header {
@@ -87,6 +89,7 @@
 .entry-page .form-container {
     width: 100%;
     display: grid;
+    margin-bottom: 1rem;
 }
 
 .entry-page .form-container p {
@@ -99,7 +102,7 @@
 
 .entry-page form textarea {
     width: 100%;
-    border: none;
+    /* border: none; */
     outline: none;
     padding: .7rem;
     font-family: inherit;
@@ -123,5 +126,24 @@
     width: fit-content;
     border-radius: 4px;
     cursor: pointer;
+}
 
+.entry-page .page-aside .topics-container {
+    display: grid;
+    row-gap: 1rem;
+}
+
+.entry-page .page-aside h5 {
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 860px) {
+    .entry-page {
+        grid-template-columns: 1fr;
+    }
+
+    .entry-page .page-aside .topics-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem
+    }
 }

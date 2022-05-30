@@ -1,50 +1,89 @@
 {% extends "logs/base.html" %}
+{%load filter%}
 {% block content %}
 <main class="entry-page">
-    <header class="entry-page-header">
-        <h1>#{{ topic }}</h1>
-        <span>Created by <span>{{ topic.owner }}</span></span>
-    </header>
-    <p class="description">{{ topic.description }}</p>
-    <div class="footer">
-        <p>{{ topic.date_added }}</p><span class="dot">•</span>
-        {% if topic.public %}
-        <span>Public</span>
-        {%else%}
-        <span>Private</span>
-        {%endif%}
-    </div>
-    <header class="entries-header">
-        {% if entries|length is 0 %}
-        <p>No entries</p>
-        {% elif entries|length is 1 %}
-        <p>1 entry</p>
-        {% else %}
-        <p>{{entries|length}} entries</p>
-        {%endif%}
-    </header>
-    <ul>
-        {% for entry in entries %}
-        <li class="entry-item">
-            <header class="entry-item-header">
-                <span>{{entry.owner}}</span><span class="dot">•</span><span>{{ entry.date_added}}</span>
-            </header>
-            <p>{{ entry.entry|linebreaks }}</p>
-            {% if topic.public is not True %}
-            <a href="{% url 'logs:edit_entry' entry.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+    <section class="main-content">
+        <header class="entry-page-header">
+            <h1>#{{ topic }}</h1>
+            <span>Created by <span>{{ topic.owner }}</span></span>
+        </header>
+        <div class="description">
+            {% if topic.description %}
+            <p>{{ topic.description }}</p>
+            {% else %}
+            <em>No description</em>
             {% endif %}
-        </li>
-        {% empty %}
-        <em>There are no entries for this topic yet.</em>
-        {% endfor %}
-    </ul>
-    <div class="form-container">
-        <p>Add a new entry:</p>
-        <form action="{% url 'logs:topic' topic.id %}" method='post'>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button name='submit'><i class="fa-solid fa-paper-plane"></i></button>
-        </form>
-    </div>
+        </div>
+        <div class="footer">
+            <p>{{ topic.date_added }}</p><span class="dot">•</span>
+            {% if topic.public %}
+            <span>Public</span>
+            {%else%}
+            <span>Private</span>
+            {%endif%}
+        </div>
+        <header class="entries-header">
+            {% if entries|length is 0 %}
+            <p>No entries</p>
+            {% elif entries|length is 1 %}
+            <p>1 entry</p>
+            {% else %}
+            <p>{{entries|length}} entries</p>
+            {%endif%}
+        </header>
+        <div class="form-container">
+            <p>Add a new entry:</p>
+            <form action="{% url 'logs:topic' topic.id %}" method='post'>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button name='submit'><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+        <ul>
+            {% for entry in entries %}
+            <li class="entry-item">
+                <header class="entry-item-header">
+                    <span>{{entry.owner}}</span><span class="dot">•</span><span>{{ entry.date_added}}</span>
+                </header>
+                <p>{{ entry.entry|linebreaks }}</p>
+                {% if topic.public is not True %}
+                <a href="{% url 'logs:edit_entry' entry.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                {% endif %}
+            </li>
+            {% empty %}
+            <em>There are no entries for this topic yet.</em>
+            {% endfor %}
+        </ul>
+    </section>
+    <aside class="page-aside">
+        <h5>Other Topics</h5>
+        <div class="topics-container">
+            {% for other_topic in topics%}
+            <a href="{% url 'logs:topic' other_topic.id %}" class="topic-item">
+                <h4>{{other_topic}}</h4>
+                <div class="meta-data">
+                    <span>{{other_topic.date_added}}</span>
+                    <span class="dot">•</span>
+                    {% if other_topic.public is True %}
+                    <span>Public</span>
+                    {%else%}
+                    <span>Private</span>
+                    {%endif%}
+                </div>
+                <div class="description">
+                    {% if other_topic.description %}
+                    <p>{{ other_topic.description }}</p>
+                    {% else %}
+                    <em>No description</em>
+                    {% endif %}
+                </div>
+                <div class="footer">
+                    <p class="author">by {{other_topic.owner}}</p>
+                    <p>{{topic_entries|key:other_topic}}</p>
+                </div>
+            </a>
+            {%endfor%}
+        </div>
+    </aside>
 </main>
 {% endblock content %}

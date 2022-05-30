@@ -14,7 +14,8 @@
     margin: 1rem 0;
 }
 
-.topics ul li {
+.topics ul li,
+.entry-page .topic-item {
     box-shadow: -1px 1px 7px 2px #b5b3b341;
     list-style: none;
     border-radius: 4px;
@@ -22,7 +23,8 @@
     background-color: #fff;
 }
 
-.topics li .topic-item {
+.topics li .topic-item,
+.entry-page .topic-item {
     text-decoration: none;
     color: #000;
     padding: 1rem;
@@ -42,17 +44,21 @@
     padding: 2rem 0;
 }
 
-.topics li .topic-item h4 {
+.topics li .topic-item h4,
+.entry-page .topic-item h4 {
     text-transform: capitalize;
 }
 
 .topics li .topic-item .meta-data,
-.topics li .topic-item .footer {
+.topics li .topic-item .footer,
+.entry-page .topic-item .meta-data,
+.entry-page .topic-item .footer {
     font-size: .75rem;
     color: #999;
 }
 
-.topics li .description {
+.topics li .description,
+.entry-page .description {
     margin: .5rem 0;
     font-size: .8rem;
     color: #333;
@@ -62,7 +68,8 @@
     -webkit-box-orient: vertical;
 }
 
-.topics li .topic-item .footer {
+.topics li .topic-item .footer,
+.entry-page .topic-item .footer {
     display: flex;
     justify-content: space-between;
     align-items: center;

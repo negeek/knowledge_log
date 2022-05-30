@@ -28,6 +28,18 @@ def topics(request):
 @login_required
 def topic(request, topic_id):
     topic = Topic.objects.get(id=topic_id)
+    topics = Topic.objects.order_by('date_added')
+    topics = topics.exclude(topic=topic)
+
+    print(topics)
+    topic_entries = dict()
+    for other_topic in topics:
+        if other_topic != topic:
+            if other_topic.public or request.user == other_topic.owner:
+                other_entries = other_topic.entry_set.count()
+                topic_entries[other_topic] = other_entries
+            else:
+                topics = topics.exclude(topic=other_topic)
     if topic.public == True:
         entries = topic.entry_set.order_by('date_added')
     else:
@@ -46,7 +58,7 @@ def topic(request, topic_id):
             new_entry.save()
             return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
 
-    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries, 'form': form})
+    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries, 'form': form, 'topics': topics, 'topic_entries': topic_entries})
 
 
 @login_required
