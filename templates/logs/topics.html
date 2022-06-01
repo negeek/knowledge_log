@@ -1,5 +1,6 @@
 {% extends "logs/base.html" %}
 {% load filter %}
+{% load tz %}
 {% block content %}
 <main class="public-topics topics">
     <h1>My Topics</h1>
@@ -11,7 +12,7 @@
                     <h4>{{topic}}</h4>
                 </header>
                 <div class="meta-data">
-                    <span>{{topic.date_added}}</span>
+                    <span>{{topic.date_added|localtime}}</span>
                     <span class="dot">•</span>
                     {% if topic.public is True %}
                     <span>Public</span>

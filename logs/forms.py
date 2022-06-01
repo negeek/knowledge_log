@@ -20,3 +20,12 @@ class EntryForm(forms.ModelForm):
         labels = {'entry': ''}
         widgets = {'entry': forms.Textarea(
             attrs={'rows': 3, "PlaceHolder": "Today, i learnt about..."})}
+
+
+class EntryEditForm(forms.ModelForm):
+    class Meta:
+        model = Entry
+        fields = ['entry']
+        labels = {'entry': ''}
+        widgets = {'entry': forms.Textarea(
+            attrs={'rows': 3, "PlaceHolder": "Today, i learnt about...", "autofocus": True, "class": "edit-entry-field"})}

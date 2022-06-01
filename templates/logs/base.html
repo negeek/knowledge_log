@@ -35,6 +35,13 @@
     </header>
     {% block content %}{% endblock content %}
 
+
+    <script>
+        window.addEventListener("load", (e) => {
+            const timeZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            document.cookie = 'timezone=' + encodeURIComponent(timeZoneName) + '; path=/';
+        })
+    </script>
 </body>
 
 </html>

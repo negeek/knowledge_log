@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from .models import Topic, Entry
-from .forms import EntryForm, Topicform
+from .forms import EntryForm, Topicform, EntryEditForm
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 # Create your views here.
@@ -16,7 +16,7 @@ def index(request):
 
 @login_required
 def topics(request):
-    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
+    topics = Topic.objects.filter(owner=request.user).order_by('-date_added')
     topic_entries = dict()
     for topic in topics:
         entries = topic.entry_set.count()
@@ -28,17 +28,16 @@ def topics(request):
 @login_required
 def topic(request, topic_id, entry_id=None):
     topic = Topic.objects.get(id=topic_id)
-    topics = Topic.objects.order_by('date_added')
+    topics = Topic.objects.order_by('-date_added')
     topics = topics.exclude(topic=topic)
     if entry_id != None:
         entry = Entry.objects.get(id=entry_id)
+        print(entry.date_added, entry.updated_at)
     else:
         entry = None
 
     if request.method == 'GET':
         if entry_id == None:
-
-            # print(topics)
             topic_entries = dict()
             for other_topic in topics:
                 if other_topic != topic:
@@ -48,14 +47,14 @@ def topic(request, topic_id, entry_id=None):
                     else:
                         topics = topics.exclude(topic=other_topic)
             if topic.public == True:
-                entries = topic.entry_set.order_by('date_added')
+                entries = topic.entry_set.order_by('-date_added')
             else:
                 if topic.owner != request.user:
                     return render(request, 'logs/error.html', {})
-            entries = topic.entry_set.order_by('date_added')
+            entries = topic.entry_set.order_by('-date_added')
 
             form = EntryForm()
-            form2 = None
+            formEdit = None
         else:
 
             print(topics)
@@ -68,14 +67,14 @@ def topic(request, topic_id, entry_id=None):
                     else:
                         topics = topics.exclude(topic=other_topic)
             if topic.public == True:
-                entries = topic.entry_set.order_by('date_added')
+                entries = topic.entry_set.order_by('-date_added')
             else:
                 if topic.owner != request.user:
                     return render(request, 'logs/error.html', {})
-            entries = topic.entry_set.order_by('date_added')
+            entries = topic.entry_set.order_by('-date_added')
 
             form = EntryForm()
-            form2 = EntryForm(instance=entry)
+            formEdit = EntryEditForm(instance=entry)
     if request.method == 'POST':
         if entry_id == None:
             form = EntryForm(data=request.POST)
@@ -84,20 +83,24 @@ def topic(request, topic_id, entry_id=None):
                 new_entry = form.save(commit=False)
                 new_entry.topic = topic
                 new_entry.owner = request.user
+
                 new_entry.save()
+
                 return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
         else:
-            form2 = EntryForm(instance=entry, data=request.POST)
-            if form2.is_valid():
-                form2.save()
+            formEdit = EntryEditForm(instance=entry, data=request.POST)
+            if formEdit.is_valid():
+                edit = formEdit.save(commit=False)
+                edit.edited = True
+                edit.save()
                 return HttpResponseRedirect(reverse('logs:topic', args=[topic.id]))
 
-    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries, 'form': form, 'topics': topics, 'topic_entries': topic_entries, 'form2': form2, 'entry2': entry})
+    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries, 'form': form, 'topics': topics, 'topic_entries': topic_entries, 'formEdit': formEdit, 'entryEdit': entry})
 
 
 @login_required
 def public_topics(request):
-    topics = topics = Topic.objects.filter(public=True).order_by('date_added')
+    topics = topics = Topic.objects.filter(public=True).order_by('-date_added')
     topic_entries = dict()
     for topic in topics:
         entries = topic.entry_set.count()

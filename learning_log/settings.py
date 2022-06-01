@@ -43,9 +43,10 @@ INSTALLED_APPS = [
     'users',
     'logs.templatetags',
 ]
-
+CLIENT_DEFAULT_TIME_ZONE = 'Africa/Lagos'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'logs.middleware.TimezoneMiddleware'
 ]
 
 ROOT_URLCONF = 'learning_log.urls'
@@ -68,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'logs.context_processors.common_variables',
             ],
 
         },
