@@ -73,7 +73,7 @@
     <aside class="page-aside">
         <h5>Other Topics</h5>
         <div class="topics-container">
-            {% for other_topic in topics%}
+            {% for other_topic in other_topics%}
             <a href="{% url 'logs:topic' other_topic.id %}" class="topic-item">
                 <h4>{{other_topic}}</h4>
                 <div class="meta-data">
@@ -94,7 +94,7 @@
                 </div>
                 <div class="footer">
                     <p class="author">by {{other_topic.owner}}</p>
-                    <p>{{topic_entries|key:other_topic}}</p>
+                    <p>{{other_topic|len_entries}}</p>
                 </div>
             </a>
             {%endfor%}
