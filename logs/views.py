@@ -40,7 +40,6 @@ class topic(View):
         for other_topic in topics:
             if other_topic.public or user == other_topic.owner:
                 other_topics.append(other_topic)
-
         return other_topics
 
     def get(self, request, topic_id, entry_id=None):
@@ -78,14 +77,11 @@ class topic(View):
 
         else:
             form = self.entryForm(data=request.POST)
-
             if form.is_valid():
                 new_entry = form.save(commit=False)
                 new_entry.topic = topic
                 new_entry.owner = request.user
-
                 new_entry.save()
-
                 return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
 
 
