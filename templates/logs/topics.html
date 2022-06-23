@@ -3,7 +3,11 @@
 {% load tz %}
 {% block content %}
 <main class="public-topics topics">
+    {% if public %}
+    <h1>Feeds</h1>
+    {%else%}
     <h1>My Topics</h1>
+    {%endif%}
     <ul>
         {% for topic in topics %}
         <li>
@@ -40,7 +44,7 @@
         <li>No topics have been added yet.</li>
         {% endfor %}
         <li>
-            <a href="{% url 'logs:new_topic'%}" class="add-new-card">
+            <a href="{% url 'logs:topics' None 'new_topic' %}" class="add-new-card">
                 <i class="fas fa-plus"></i>
                 <span>Add new topic</span>
             </a>

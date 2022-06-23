@@ -9,17 +9,45 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.views.generic import ListView
+from django.shortcuts import get_object_or_404
+from django.views.generic.base import TemplateView
 # Create your views here.
 
 
-def index(request):
-    return render(request, 'logs/index.html')
+class index(TemplateView):
+    template_name = 'logs/index.html'
 
 
-@login_required
-def topics(request):
-    topics = Topic.objects.filter(owner=request.user).order_by('-date_added')
-    return render(request, 'logs/topics.html', {'topics': topics})
+@method_decorator(login_required, name='dispatch')
+class topics(View):
+    model = Topic
+    form = Topicform
+    template_name = 'logs/topics.html'
+
+    def get(self, request, public=None, new_topic=None):
+        if not new_topic:
+            if not public:
+                topics = self.model.objects.filter(
+                    owner=request.user).order_by('-date_added')
+                return render(request, self.template_name, {'topics': topics})
+            elif public == 'public':
+                topics = self.model.objects.filter(
+                    public=True).order_by('-date_added')
+                return render(request, self.template_name, {'topics': topics, 'public': public})
+            else:
+                return render(request, 'logs/error.html', {})
+        elif new_topic == 'new_topic':
+            form = self.form()
+            return render(request, 'logs/new_topic.html', {'form': form})
+
+    def post(self, request):
+        form = self.form(request.POST)
+        if form.is_valid():
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
+            return HttpResponseRedirect(reverse('logs:topics'))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -44,7 +72,7 @@ class topic(View):
 
     def get(self, request, topic_id, entry_id=None):
         user = request.user
-        topic = self.topicModel.objects.get(id=topic_id)
+        topic = get_object_or_404(self.topicModel, id=topic_id)
 
         # check for user access to the topic
         if self.topicAccess(user, topic) != True:
@@ -53,7 +81,7 @@ class topic(View):
         # if access is granted
         other_topics = self.otherTopics(user, topic)
         if entry_id:
-            entry = self.entryModel.objects.get(id=entry_id)
+            entry = get_object_or_404(self.entryModel, id=entry_id)
             entries = topic.entry_set.order_by('-date_added')
             form = self.entryForm()
             formEdit = self.editForm(instance=entry)
@@ -65,9 +93,9 @@ class topic(View):
         return render(request, self.template_name, {'topic': topic, 'entries': entries, 'form': form, 'other_topics': other_topics, 'formEdit': formEdit, 'entryEdit': entry})
 
     def post(self, request, topic_id, entry_id=None):
-        topic = self.topicModel.objects.get(id=topic_id)
+        topic = get_object_or_404(self.topicModel, id=topic_id)
         if entry_id:
-            entry = self.entryModel.objects.get(id=entry_id)
+            entry = get_object_or_404(self.entryModel, id=entry_id)
             formEdit = self.editForm(instance=entry, data=request.POST)
             if formEdit.is_valid():
                 edit = formEdit.save(commit=False)
@@ -83,167 +111,3 @@ class topic(View):
                 new_entry.owner = request.user
                 new_entry.save()
                 return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
-
-
-@login_required
-def public_topics(request):
-    topics = topics = Topic.objects.filter(public=True).order_by('-date_added')
-    return render(request, 'logs/public_topics.html', {'topics': topics})
-
-
-@login_required
-def new_topic(request):
-    if request.method != 'POST':
-        form = Topicform()
-    else:
-        form = Topicform(request.POST)
-        if form.is_valid():
-            new_topic = form.save(commit=False)
-            new_topic.owner = request.user
-            new_topic.save()
-            return HttpResponseRedirect(reverse('logs:topics'))
-    return render(request, 'logs/new_topic.html', {'form': form})
-
-
-# NAIVE ME WIRTIING RUBBISH BELOW
-'''
-@login_required
-def topic(request, topic_id, entry_id=None):
-    topic = Topic.objects.get(id=topic_id)
-    topics = Topic.objects.order_by('-date_added')
-    topics = topics.exclude(topic=topic)
-    if entry_id != None:
-        
-        print(entry.date_added, entry.updated_at)
-    else:
-        entry = None
-
-    if request.method == 'GET':
-        if entry_id == None:
-            topic_entries = dict()
-            for other_topic in topics:
-                if other_topic != topic:
-                    if other_topic.public or request.user == other_topic.owner:
-                        other_entries = other_topic.entry_set.count()
-                        topic_entries[other_topic] = other_entries
-                    else:
-                        topics = topics.exclude(topic=other_topic)
-            if topic.public == True:
-                entries = topic.entry_set.order_by('-date_added')
-            else:
-                if topic.owner != request.user:
-                    return render(request, 'logs/error.html', {})
-            entries = topic.entry_set.order_by('-date_added')
-
-            form = EntryForm()
-            formEdit = None
-        else:
-
-            print(topics)
-            topic_entries = dict()
-            for other_topic in topics:
-                if other_topic != topic:
-                    if other_topic.public or request.user == other_topic.owner:
-                        other_entries = other_topic.entry_set.count()
-                        topic_entries[other_topic] = other_entries
-                    else:
-                        topics = topics.exclude(topic=other_topic)
-            if topic.public == True:
-                entries = topic.entry_set.order_by('-date_added')
-            else:
-                if topic.owner != request.user:
-                    return render(request, 'logs/error.html', {})
-            entries = topic.entry_set.order_by('-date_added')
-
-            form = EntryForm()
-            formEdit = EntryEditForm(instance=entry)
-    if request.method == 'POST':
-        if entry_id == None:
-            form = EntryForm(data=request.POST)
-
-            if form.is_valid():
-                new_entry = form.save(commit=False)
-                new_entry.topic = topic
-                new_entry.owner = request.user
-
-                new_entry.save()
-
-                return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
-        else:
-            formEdit = EntryEditForm(instance=entry, data=request.POST)
-            if formEdit.is_valid():
-                edit = formEdit.save(commit=False)
-                edit.edited = True
-                edit.save()
-                return HttpResponseRedirect(reverse('logs:topic', args=[topic.id]))
-
-    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries, 'form': form, 'topics': topics, 'topic_entries': topic_entries, 'formEdit': formEdit, 'entryEdit': entry})
-
-@login_required
-def new_entry(request, topic_id):
-    topic = Topic.objects.get(id=topic_id)
-    if request.method != 'POST':
-        form = EntryForm()
-    else:
-        print(request.POST)
-        form = EntryForm(data=request.POST)
-
-        if form.is_valid():
-            new_entry = form.save(commit=False)
-            new_entry.topic = topic
-            new_entry.owner = request.user
-            new_entry.save()
-            return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
-    return render(request, 'logs/new_entry.html', {'form': form, 'topic': topic})
-
-    @login_required
-def edit_entry(request, entry_id):
-    entry = Entry.objects.get(id=entry_id)
-    topic = entry.topic
-    if topic.owner != request.user:
-        return render(request, 'logs/error.html', {})
-
-    if request.method != 'POST':
-        form = EntryForm(instance=entry)
-    else:
-        form = EntryForm(instance=entry, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('logs:topic', args=[topic.id]))
-    return render(request, 'logs/edit_entry.html', {'form': form, 'topic': topic, 'entry': entry})
-    @login_required
-def topic(request, topic_id):
-
-    topic = Topic.objects.get(id=topic_id)
-    topics = Topic.objects.order_by('date_added')
-    topics = topics.exclude(topic=topic)
-
-    print(topics)
-    topic_entries = dict()
-    for other_topic in topics:
-        if other_topic != topic:
-            if other_topic.public or request.user == other_topic.owner:
-                other_entries = other_topic.entry_set.count()
-                topic_entries[other_topic] = other_entries
-            else:
-                topics = topics.exclude(topic=other_topic)
-    if topic.public == True:
-        entries = topic.entry_set.order_by('date_added')
-    else:
-        if topic.owner != request.user:
-            return render(request, 'logs/error.html', {})
-    entries = topic.entry_set.order_by('date_added')
-
-    form = EntryForm()
-    if request.method == 'POST':
-        form = EntryForm(data=request.POST)
-
-        if form.is_valid():
-            new_entry = form.save(commit=False)
-            new_entry.topic = topic
-            new_entry.owner = request.user
-            new_entry.save()
-            return HttpResponseRedirect(reverse('logs:topic', args=[topic_id]))
-
-    return render(request, 'logs/topic.html', {'topic': topic, 'entries': entries, 'form': form, 'topics': topics, 'topic_entries': topic_entries})
-    '''
