@@ -40,6 +40,8 @@ class topics(View):
         elif new_topic == 'new_topic':
             form = self.form()
             return render(request, 'logs/new_topic.html', {'form': form})
+        else:
+            return render(request, 'logs/error.html', {})
 
     def post(self, request):
         form = self.form(request.POST)
