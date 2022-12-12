@@ -1,5 +1,5 @@
 # Knowledge-log
 
-A simple Django Project that helps you log what you learn. 
+A simple Django Project that logs what you learn. 
 
 
