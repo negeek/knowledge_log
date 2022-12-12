@@ -9,7 +9,7 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button name="submit">log in</button>
-            <input type="hidden" name="next" value="{% url 'logs:public_topics' %}" />
+            <input type="hidden" name="next" value="{% url 'logs:topics' 'public' %}" />
         </form>
         <span class="post-form">Don't have an account? <a href="{% url 'users:register' %}">Register</a></span>
     </div>
