@@ -1,6 +1,5 @@
-from logging import PlaceHolder
+
 from django import forms
-from matplotlib import widgets
 from .models import Topic, Entry
 
 
