@@ -10,4 +10,4 @@ python manage.py makemigrations
 python manage.py migrate
 
 echo "-----------Run gunicorn--------- "
-gunicorn -b :8000 learning_log.wsgi.application
+gunicorn -b :8000 learning_log.wsgi:application
