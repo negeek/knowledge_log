@@ -1,0 +1,23 @@
+volumes:
+  - name:  static
+    mount: /static/
+envs:
+  - DB_PASS: random_pg 
+    type: password
+  - DB_NAME: knowledgeDB
+  - DB_HOST: postgresql
+  - SECRET_KEY: django-insecure-r&ei-bkq2g0e9ay=6o#+=%rzc(&$k@svdrkmbpeo-+#7j=3)7v
+
+services:
+  - postgresql:
+      tag: 11
+      volumes:
+        - name: postgres_vol
+          mount: /var/lib/postgresql/data/
+      envs:
+        - POSTGRES_DB: knowledgeDB
+        - POSTGRES_USER: negeek
+        - POSTGRES_PASSWORD: random_pg 
+
+
+
