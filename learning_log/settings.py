@@ -29,7 +29,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://knowledgeloggqhy.eu-ccofhtfzmvsd.dopraxapp.com']
+#CSRF_TRUSTED_ORIGINS = ['https://knowledgeloggqhy.eu-ccofhtfzmvsd.dopraxapp.com']
+CSRF_TRUSTED_ORIGINS = ['*']
 
 
 # Application definition
