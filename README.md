@@ -1,6 +1,6 @@
 # Knowledge-log
 
-A simple Django Project that logs what you learn. 
+An application that keeps track of how much knowledge you have acquired.
 
 Check it out [here](https://knowledgelogka76.kfirjgyswf.dopraxrocks.com/)
 
